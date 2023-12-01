@@ -1,0 +1,29 @@
+#video_area {
+    text-align: center;
+}
+
+#video_play {
+    max-width: 80vw;
+}
+
+#text-print-area {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+#text-print-table {
+    width: 100%;
+}
+
+.tobj>tr>td {
+    border: 1px solid;
+}
+
+.sts {
+    padding-left: 2px;
+    cursor: pointer;
+}
+
+.blue-line {
+    border: 1px solid blue;
+}
