@@ -1,13 +1,24 @@
+html, body {
+    height: 100vh;
+    margin: 0;
+}
+
+#play-db-area {
+    height: 100%;
+}
+
 #video_area {
     text-align: center;
+    max-height: 650px;
 }
 
 #video_play {
-    max-width: 80vw;
+    max-height: 650px;
+    width: 100%;
 }
 
 #text-print-area {
-    max-height: 300px;
+    max-height: calc(100% - 650px);
     overflow-y: auto;
 }
 
@@ -16,14 +27,27 @@
 }
 
 .tobj>tr>td {
-    border: 1px solid;
+    /* border: 1px solid; */
 }
 
 .sts {
+    font-size: xxx-large;
     padding-left: 2px;
     cursor: pointer;
 }
 
 .blue-line {
     border: 1px solid blue;
+    color: blue;
+    font-weight: bold;
+}
+
+@media(max-width: 1024px) {
+    #text-print-area {
+        max-height: 100%;
+    }
+
+    .sts {
+        font-size: xx-large;
+    }
 }

@@ -70,20 +70,28 @@ function displaySubtitles(subtitles) {
         // subtitlesDiv.appendChild(subtitleElement);
 
         const textPrintTableTr = document.createElement("tr");
-        const customTimeArr = subtitle.start.split(':');
-        const customTimeHour = customTimeArr[0] * 3600;
-        const customTimeMinute = customTimeArr[1] * 60;
-        const customTimeSecond = customTimeArr[2];
-
-        const customTime = Number(customTimeHour) + Number(customTimeMinute) + Number(customTimeSecond);
+        const customStartTimeArr = subtitle.start.split(':');
+        const customStartTimeHour = customStartTimeArr[0] * 3600;
+        const customStartTimeMinute = customStartTimeArr[1] * 60;
+        const customStartTimeSecond = customStartTimeArr[2];
+        const customStartTime = Number(customStartTimeHour) + Number(customStartTimeMinute) + Number(customStartTimeSecond);
+        
+        const customEndTimeArr = subtitle.end.split(":");
+        const customEndTimeHour = customEndTimeArr[0] * 3600;
+        const customEndTimeMinute = customEndTimeArr[1] * 60;
+        const customEndTimeSecond = customEndTimeArr[2];
+        const customEndTime =
+            Number(customEndTimeHour) +
+            Number(customEndTimeMinute) +
+            Number(customEndTimeSecond);
 
         textPrintTableTr.onclick = e => {
-            video_play.currentTime = customTime;
+            video_play.currentTime = customStartTime;
         }
 
         const textPrintTableTrTd1 = document.createElement("td");
         textPrintTableTrTd1.innerText = subtitle.text;
-        textPrintTableTrTd1.id = 'st-'+customTime;
+        textPrintTableTrTd1.id = 'st-'+customStartTime+'/'+customEndTime;
         textPrintTableTrTd1.className = 'sts';
         textPrintTableTr.appendChild(textPrintTableTrTd1);
         textPrintTableTbody.appendChild(textPrintTableTr);
@@ -94,13 +102,19 @@ const video_play = document.getElementById("video_play");
 
 video_play.addEventListener("timeupdate", (e) => {
     const stsList = [...document.getElementsByClassName('sts')];
+    const textPrintArea = document.getElementById("text-print-area");
 
     stsList.forEach(sts => {
-        const customPicTime = sts.id.replace('st-', '');
-            sts.classList.remove("blue-line");
+        const customPicTimeArr = sts.id.replace('st-', '').split('/');
+        sts.classList.remove("blue-line");
 
-        if (Number(customPicTime) === e.target.currentTime) {
-            sts.classList.add('blue-line');
+        if (customPicTimeArr[0] <= e.target.currentTime && e.target.currentTime < customPicTimeArr[1]) {
+            sts.classList.add("blue-line");
+            textPrintArea.scrollTo({
+                top: sts.offsetTop,
+                behavior: 'smooth'
+            });
+            //console.log(sts.offsetTop);
         }
     });
 
