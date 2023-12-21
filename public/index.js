@@ -1,5 +1,5 @@
 // SRT 파일 경로 설정
-const videoFilePath = document.getElementById("video_obj").src; //"./media/Adam_Levine_Good_Mood_sub.srt";
+const videoFilePath = document.getElementById("video_obj").src;
 const srtFilePath = videoFilePath.replace(".mp4", ".srt"); // SRT 파일 경로
 
 // AJAX를 사용하여 SRT 파일 읽기
@@ -65,10 +65,6 @@ function displaySubtitles(subtitles) {
     }
 
     subtitles.forEach((subtitle) => {
-        // const subtitleElement = document.createElement("p");
-        // subtitleElement.textContent = subtitle.text;
-        // subtitlesDiv.appendChild(subtitleElement);
-
         const textPrintTableTr = document.createElement("tr");
         const customStartTimeArr = subtitle.start.split(':');
         const customStartTimeHour = customStartTimeArr[0] * 3600;
