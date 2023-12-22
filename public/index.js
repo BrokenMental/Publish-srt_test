@@ -12,44 +12,43 @@ const setSrtFile = () => {
 
             // HTML에 표시
             displaySubtitles(subtitles);
-        })
-        .catch((error) => console.error("Error fetching the SRT file:", error));
-
-    // SRT 파일 파싱 함수
-    function parseSrt(srtData) {
-        const subtitles = [];
-
-        // 각 줄마다 분리하여 배열로 만듦
-        const lines = srtData.split(/\r?\n/);
-
-        let index = -1;
-        lines.forEach((line) => {
-            // 시간 정보를 가진 줄을 찾음
-            if (/^\d+$/.test(line)) {
-                index++;
-                subtitles[index] = {};
-            } else if (
-                /^\d\d:\d\d:\d\d,\d{3} --> \d\d:\d\d:\d\d,\d{3}$/.test(line)
-            ) {
-                const [start, end] = line
-                    .split(" --> ")
-                    .map((time) => time.replace(",", "."));
-                subtitles[index]["start"] = start;
-                subtitles[index]["end"] = end;
-            } else if (line.trim() === "") {
-                // 빈 줄은 무시
-            } else {
-                if (subtitles[index]["text"]) {
-                    subtitles[index]["text"] += "\n" + line;
-                } else {
-                    subtitles[index]["text"] = line;
-                }
-            }
-        });
-
-        return subtitles;
-    }
+        }).catch(err => console.error("Error fetching the SRT file:", err));
 };
+
+// SRT 파일 파싱 함수
+const parseSrt = (srtData) => {
+    const subtitles = [];
+
+    // 각 줄마다 분리하여 배열로 만듦
+    const lines = srtData.split(/\r?\n/);
+
+    let index = -1;
+    lines.forEach((line) => {
+        // 시간 정보를 가진 줄을 찾음
+        if (/^\d+$/.test(line)) {
+            index++;
+            subtitles[index] = {};
+        } else if (
+            /^\d\d:\d\d:\d\d,\d{3} --> \d\d:\d\d:\d\d,\d{3}$/.test(line)
+        ) {
+            const [start, end] = line
+                .split(" --> ")
+                .map((time) => time.replace(",", "."));
+            subtitles[index]["start"] = start;
+            subtitles[index]["end"] = end;
+        } else if (line.trim() === "") {
+            // 빈 줄은 무시
+        } else {
+            if (subtitles[index]["text"]) {
+                subtitles[index]["text"] += "\n" + line;
+            } else {
+                subtitles[index]["text"] = line;
+            }
+        }
+    });
+
+    return subtitles;
+}
 
 // HTML에 자막 표시 함수
 const displaySubtitles = (subtitles) => {
@@ -102,7 +101,7 @@ const displaySubtitles = (subtitles) => {
     });
 }
 
-setSrtFile();
+//setSrtFile();
 
 const video_play = document.getElementById("video_play");
 video_play.addEventListener("timeupdate", (e) => {
@@ -131,16 +130,19 @@ video_play.addEventListener("timeupdate", (e) => {
 
 const viewVideoList = (closeFlg) => {
     const videoListArea = document.getElementById("video-list-popup");
+    const video_play = document.getElementById("video_play");
+    
     if (closeFlg) {
         videoListArea.style.display = "none";
         document.body.style.overflow = "auto";
         return;
     }
 
+    video_play.pause();
     axios
         .get("/list")
         .then(function (res) {
-            console.log(res.data);
+            //console.log(res.data);
             const videoList = res.data;
 
             const videoTable = document.getElementById("video-table");
@@ -159,7 +161,9 @@ const viewVideoList = (closeFlg) => {
                 td.onclick = (e) => {
                     const video_obj = document.getElementById("video_obj");
                     video_obj.src = videoData.location;
+                    video_play.load();
                     setSrtFile();
+                    viewVideoList(1);
                 };
 
                 const location = document.createElement("label");
