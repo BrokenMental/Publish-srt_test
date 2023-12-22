@@ -27,14 +27,28 @@
         </table>
     </div>
 </section>
-<section>
-    <div id="video-list-popup">
-        <input type="button" id="chg-video-list" value="메뉴">
-        <div id="video-list">
-            <!-- 비디오 변경 팝업 리스트 추가하기 -->
-        </div>
+
+<input type="button" id="btn-chg-video-list" value="메뉴" onclick="viewVideoList();">
+<section id="video-list-popup">
+    <div id="video-list">
+        <table id="video-table">
+            <thead>
+                <tr>
+                    <th>영상 리스트</th>
+                </tr>
+            </thead>
+            <tbody id="video-tbody">
+                <tr>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="btn-close-popup-area">
+        <input type="button" id="btn-close-popup" value="닫기" onclick="viewVideoList(1);">
     </div>
 </section>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src='index.js'></script>
 </body>
 </html>
